@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import local from '../../utils/local'
 export default {
   data () {
     // 自定义校验
@@ -48,8 +49,8 @@ export default {
     }
     return {
       loginform: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       // 进行匹配 在标签中写loginrulers
       loginrulers: {
@@ -67,17 +68,29 @@ export default {
   // 定义方法
   methods: {
     login () {
-      this.$refs['loginForm'].validate(valid => {
+      this.$refs['loginForm'].validate(async valid => {
         if (valid) {
           // console.log('ok')
-          this.$http
-            .post('authorizations', this.loginform)
-            .then(res => {
-              this.$router.push('/')
-            })
-            .catch(() => {
-              this.$message.error('手机号或验证码错误')
-            })
+          // this.$http
+          // .post('authorizations', this.loginform)
+          // .then(res => {
+          //   // 成功 res 是响应对象  res.data 是响应主体
+          //   // 保存用户信息（token）
+          //   local.setUser(res.data.data)
+          //   this.$router.push('/')
+          // })
+          // .catch(() => {
+          //   this.$message.error('手机号或验证码错误')
+          // })
+          try {
+            const {
+              data: { data }
+            } = await this.$http.post('authorizations', this.loginform)
+            local.setUser(data)
+            this.$router.push('/')
+          } catch (e) {
+            this.$message.error('手机号或验证码错误')
+          }
         }
       })
     }
