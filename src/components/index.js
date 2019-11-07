@@ -8,9 +8,11 @@
 // - 使用插件：Vue.use(插件)
 import Mybreak from '@/components/my-break'
 import Channel from '@/components/channel'
+import Myimage from '@/components/my-image'
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.component('my-break', Mybreak)
     Vue.component('my-channel', Channel)
+    Vue.component('my-image', Myimage)
   }
 }

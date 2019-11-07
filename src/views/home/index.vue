@@ -70,8 +70,9 @@
 
 <script>
 import local from '../../utils/local'
+import eventBus from '../../eventBus'
 export default {
-  data () {
+  data() {
     return {
       isOpen: true,
       photo: '',
@@ -79,24 +80,30 @@ export default {
     }
   },
   methods: {
-    toggleMenu () {
+    toggleMenu() {
       this.isOpen = !this.isOpen
     },
-    setting () {
+    setting() {
       this.$router.push('/setting')
     },
-    loginout () {
+    loginout() {
       local.delUser()
       this.$router.push('/login')
     },
-    handClick (command) {
+    handClick(command) {
       this[command]()
     }
   },
-  created () {
+  created() {
     const user = local.getUser() || {}
     this.photo = user.photo
     this.name = user.name
+    eventBus.$on('uploadName', (name) => {
+      this.name = name
+    })
+    eventBus.$on('uploadPhoto', (photo) => {
+      this.photo = photo
+    })
   }
 }
 </script>
